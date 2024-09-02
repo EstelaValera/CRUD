@@ -55,19 +55,17 @@ app.put('/usuarios/:nombre', (req, res) => {
 });
 
 
-app.delete('/usuarios/:nombre',(req,res)=>{
-    const userToDelete = req.params.nombre
-    console.log(userToDelete);
-    
-    const arrayFiltered = usuarios.filter(usuario => usuario.nombre !== userToDelete)
-    
-    usuarios = arrayFiltered
-    
-    res.status(200).send('OK')
+app.delete("/usuarios/:nombre", (req, res) => {
+    const nombre = req.params.nombre
+    const index = usuarios.findIndex(usuario => usuario.nombre === nombre)
+
+    if(index === -1) {
+    res.status(404).json({error: "usuario no encontrado"})
+    } else {
+    usuarios = usuarios.filter(usuario => usuario.nombre !== nombre)
+    res.json({mensaje: "usuario eliminado correctamente"})
+    }
 })
-
-
-
 
 app.listen(3000, () => {
     console.log('Server escuchando en el puerto: http://localhost:3000')
